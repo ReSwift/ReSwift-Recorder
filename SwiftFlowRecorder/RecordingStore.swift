@@ -20,8 +20,8 @@ public class RecordingMainStore: MainStore {
     let recordingPath: String?
 
     /// Position of the rewind/replay control from the bottom of the screen
-    /// defaults to -100
-    public var rewindControlYOffset: CGFloat = -100
+    /// defaults to 100
+    public var rewindControlYOffset: CGFloat = 100
 
     var loadedActions: [Action] = [] {
         didSet {
