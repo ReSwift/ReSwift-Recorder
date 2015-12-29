@@ -364,6 +364,7 @@
 				625E671F1C2007B10027C288 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};
