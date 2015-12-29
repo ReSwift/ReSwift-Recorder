@@ -9,6 +9,8 @@
 import Foundation
 import SwiftFlow
 
+public typealias TypeMap = [String: StandardActionConvertible.Type]
+
 public class RecordingMainStore: MainStore {
 
     typealias RecordedActions = [[String : AnyObject]]
@@ -18,6 +20,7 @@ public class RecordingMainStore: MainStore {
     var computedStates: [StateType] = []
     var actionsToReplay: Int?
     let recordingPath: String?
+    private var typeMap: TypeMap = [:]
 
     /// Position of the rewind/replay control from the bottom of the screen
     /// defaults to 100
@@ -51,17 +54,32 @@ public class RecordingMainStore: MainStore {
         }
     }
 
-    public init(reducer: AnyReducer, appState: StateType, recording: String? = nil) {
-        initialState = appState
-        computedStates.append(initialState)
-        recordingPath = recording
+    public init(reducer: AnyReducer, appState: StateType, typeMaps: [TypeMap], recording: String? = nil) {
+        self.initialState = appState
+        self.computedStates.append(initialState)
+        self.recordingPath = recording
 
         super.init(reducer: reducer, appState: appState)
+
+        // merge all typemaps into one
+        typeMaps.forEach { typeMap in
+            for (key, value) in typeMap {
+                self.typeMap[key] = value
+            }
+        }
 
         if let recording = recording {
             loadedActions = loadActions(recording)
             self.replayToState(loadedActions, state: loadedActions.count)
         }
+    }
+
+    public required init(reducer: AnyReducer, appState: StateType, middleware: [Middleware]) {
+        fatalError("The current barebones implementation of SwiftFlowRecorder does not support middleware!")
+    }
+
+    public required convenience init(reducer: AnyReducer, appState: StateType) {
+        fatalError("The current Barebones implementation of SwiftFlowRecorder does not support this initializer!")
     }
 
     func dispatchRecorded(action: Action, callback: DispatchCallback?) {
@@ -70,10 +88,10 @@ public class RecordingMainStore: MainStore {
         recordAction(action)
     }
 
-    public override func dispatch(action: ActionType, callback: DispatchCallback?) {
+    public override func dispatch(action: Action, callback: DispatchCallback?) -> Any {
         if let actionsToReplay = actionsToReplay where actionsToReplay > 0 {
             // ignore actions that are dispatched during replay
-            return
+            return action
         }
 
         super.dispatch(action) { newState in
@@ -81,18 +99,51 @@ public class RecordingMainStore: MainStore {
             callback?(newState)
         }
 
-        recordAction(action.toAction())
-        loadedActions.append(action.toAction())
+        if let standardAction = convertActionToStandardAction(action) {
+            recordAction(standardAction)
+            loadedActions.append(standardAction)
+        }
+
+        return action
     }
 
     func recordAction(action: Action) {
-        let recordedAction: [String : AnyObject] = [
-            "timestamp": NSDate.timeIntervalSinceReferenceDate(),
-            "action": action.dictionaryRepresentation()
-        ]
+        let standardAction = convertActionToStandardAction(action)
 
-        recordedActions.append(recordedAction)
-        storeActions(recordedActions)
+        if let standardAction = standardAction {
+            let recordedAction: [String : AnyObject] = [
+                "timestamp": NSDate.timeIntervalSinceReferenceDate(),
+                "action": standardAction.dictionaryRepresentation()
+            ]
+
+            recordedActions.append(recordedAction)
+            storeActions(recordedActions)
+        } else {
+            print("SwiftFlowRecorder Warning: Could not log following action because it does not " +
+                    "conform to StandardActionConvertible: \(action)")
+        }
+    }
+
+    private func convertActionToStandardAction(action: Action) -> StandardAction? {
+
+        if let standardAction = action as? StandardAction {
+            return standardAction
+        } else if let standardActionConvertible = action as? StandardActionConvertible {
+            return standardActionConvertible.toStandardAction()
+        }
+
+        return nil
+    }
+
+    private func decodeAction(jsonDictionary: [String : AnyObject]) -> Action {
+        let standardAction = StandardAction(dictionary: jsonDictionary)
+
+        if !standardAction.isTypedAction {
+            return standardAction
+        } else {
+            let typedActionType = self.typeMap[standardAction.type]!
+            return typedActionType.init(standardAction)
+        }
     }
 
     lazy var recordingDirectory: NSURL? = {
@@ -141,7 +192,7 @@ public class RecordingMainStore: MainStore {
             options: NSJSONReadingOptions(rawValue: 0)) as! Array<AnyObject>
 
         let actionsArray: [Action] = jsonArray.map {
-            return Action(dictionary: $0["action"] as! [String : AnyObject])
+            return decodeAction($0["action"] as! [String : AnyObject])
         }
 
         return actionsArray
