@@ -20,13 +20,25 @@ The long term goal of this extension is to implement some of the most important 
 - Make it easier for developers to make actions serializable, ideally cutting down on some of the boilerplate code that is currently necessary.
 - Improve the implementation of this extension, the current implementation is a hack.
 
-#Installation
+##CocoaPods
 
-Install Swift Flow Router via Carthage:
+You can install Swift Flow Recorder via CocoaPods by adding it to your `Podfile`:
 
-```
-github "Swift-Flow/Swift-Flow-Recorder"
-```
+	use_frameworks!
+
+	source 'https://github.com/CocoaPods/Specs.git'
+	platform :ios, '8.0'
+
+	pod 'SwiftFlow'
+	pod 'SwiftFlowRecorder'
+	
+And run `pod install`.
+
+##Carthage
+
+You can install Swift Flow Recorder via [Carthage]() by adding the following line to your Cartfile:
+
+	github "Swift-Flow/Swift-Flow-Recorder"
 
 #Configuration
 
