@@ -1,6 +1,6 @@
 Pod::Spec.new do |s|
   s.name             = "SwiftFlowRecorder"
-  s.version          = "0.2.0"
+  s.version          = "0.2"
   s.summary          = "Time Travel and Hot Reloading for Swift Flow"
   s.description      = <<-DESC
                           A recording store for Swift Flow. Enables hot-reloading and time travel for Swift Flow apps.
