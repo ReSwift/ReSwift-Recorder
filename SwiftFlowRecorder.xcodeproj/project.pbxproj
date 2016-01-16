@@ -30,6 +30,41 @@
 			remoteGlobalIDString = 625E669A1C1FFA3C0027C288;
 			remoteInfo = SwiftFlowTests;
 		};
+		6296C9CC1C49F2E300A60ECD /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 625E672A1C2009BC0027C288 /* SwiftFlow.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 25DBCF7B1C30C4AA00D63A58;
+			remoteInfo = "SwiftFlow-OSX";
+		};
+		6296C9CE1C49F2E300A60ECD /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 625E672A1C2009BC0027C288 /* SwiftFlow.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 25DBCF871C30C4DB00D63A58;
+			remoteInfo = "SwiftFlow-OSXTests";
+		};
+		6296C9D01C49F2E300A60ECD /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 625E672A1C2009BC0027C288 /* SwiftFlow.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 25DBCF4E1C30C18D00D63A58;
+			remoteInfo = "SwiftFlow-tvOS";
+		};
+		6296C9D21C49F2E300A60ECD /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 625E672A1C2009BC0027C288 /* SwiftFlow.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 25DBCF641C30C1AC00D63A58;
+			remoteInfo = "SwiftFlow-tvOSTests";
+		};
+		6296C9D41C49F2E300A60ECD /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 625E672A1C2009BC0027C288 /* SwiftFlow.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 25DBCF371C30BF2B00D63A58;
+			remoteInfo = "SwiftFlow-watchOS";
+		};
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
@@ -105,7 +140,12 @@
 			isa = PBXGroup;
 			children = (
 				625E67301C2009BC0027C288 /* SwiftFlow.framework */,
-				625E67321C2009BC0027C288 /* SwiftFlowTests.xctest */,
+				625E67321C2009BC0027C288 /* SwiftFlow-iOSTests.xctest */,
+				6296C9CD1C49F2E300A60ECD /* SwiftFlow.framework */,
+				6296C9CF1C49F2E300A60ECD /* SwiftFlow-OSXTests.xctest */,
+				6296C9D11C49F2E300A60ECD /* SwiftFlow.framework */,
+				6296C9D31C49F2E300A60ECD /* SwiftFlow-tvOSTests.xctest */,
+				6296C9D51C49F2E300A60ECD /* SwiftFlow.framework */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -187,11 +227,46 @@
 			remoteRef = 625E672F1C2009BC0027C288 /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
-		625E67321C2009BC0027C288 /* SwiftFlowTests.xctest */ = {
+		625E67321C2009BC0027C288 /* SwiftFlow-iOSTests.xctest */ = {
 			isa = PBXReferenceProxy;
 			fileType = wrapper.cfbundle;
-			path = SwiftFlowTests.xctest;
+			path = "SwiftFlow-iOSTests.xctest";
 			remoteRef = 625E67311C2009BC0027C288 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		6296C9CD1C49F2E300A60ECD /* SwiftFlow.framework */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.framework;
+			path = SwiftFlow.framework;
+			remoteRef = 6296C9CC1C49F2E300A60ECD /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		6296C9CF1C49F2E300A60ECD /* SwiftFlow-OSXTests.xctest */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.cfbundle;
+			path = "SwiftFlow-OSXTests.xctest";
+			remoteRef = 6296C9CE1C49F2E300A60ECD /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		6296C9D11C49F2E300A60ECD /* SwiftFlow.framework */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.framework;
+			path = SwiftFlow.framework;
+			remoteRef = 6296C9D01C49F2E300A60ECD /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		6296C9D31C49F2E300A60ECD /* SwiftFlow-tvOSTests.xctest */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.cfbundle;
+			path = "SwiftFlow-tvOSTests.xctest";
+			remoteRef = 6296C9D21C49F2E300A60ECD /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		6296C9D51C49F2E300A60ECD /* SwiftFlow.framework */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.framework;
+			path = SwiftFlow.framework;
+			remoteRef = 6296C9D41C49F2E300A60ECD /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
 /* End PBXReferenceProxy section */
