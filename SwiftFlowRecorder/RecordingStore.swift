@@ -11,13 +11,13 @@ import SwiftFlow
 
 public typealias TypeMap = [String: StandardActionConvertible.Type]
 
-public class RecordingMainStore: MainStore {
+public class RecordingMainStore<State: StateType>: MainStore<State> {
 
     typealias RecordedActions = [[String : AnyObject]]
 
     var recordedActions: RecordedActions = []
-    var initialState: StateType
-    var computedStates: [StateType] = []
+    var initialState: State
+    var computedStates: [State] = []
     var actionsToReplay: Int?
     let recordingPath: String?
     private var typeMap: TypeMap = [:]
@@ -54,12 +54,12 @@ public class RecordingMainStore: MainStore {
         }
     }
 
-    public init(reducer: AnyReducer, appState: StateType, typeMaps: [TypeMap], recording: String? = nil) {
-        self.initialState = appState
+    public init(reducer: AnyReducer, state: State, typeMaps: [TypeMap], recording: String? = nil) {
+        self.initialState = state
         self.computedStates.append(initialState)
         self.recordingPath = recording
 
-        super.init(reducer: reducer, appState: appState)
+        super.init(reducer: reducer, state: state, middleware: [])
 
         // merge all typemaps into one
         typeMaps.forEach { typeMap in
@@ -95,7 +95,7 @@ public class RecordingMainStore: MainStore {
         }
 
         super.dispatch(action) { newState in
-            self.computedStates.append(newState)
+            self.computedStates.append(newState as! State)
             callback?(newState)
         }
 
@@ -201,18 +201,18 @@ public class RecordingMainStore: MainStore {
     private func replayToState(actions: [Action], state: Int) {
         if (state > computedStates.count - 1) {
             print("Rewind to \(state)...")
-            appState = initialState
+            self.state = initialState
             recordedActions = []
             actionsToReplay = state
 
             for i in 0..<state {
                 dispatchRecorded(actions[i]) { newState in
                     self.actionsToReplay = self.actionsToReplay! - 1
-                    self.computedStates.append(newState)
+                    self.computedStates.append(newState as! State)
                 }
             }
         } else {
-            self.appState = computedStates[state]
+            self.state = computedStates[state]
         }
 
     }
