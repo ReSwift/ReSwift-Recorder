@@ -3,11 +3,11 @@
 
 ⚠️ **Proof of concept. Needs a lot of love!** ⚠️
 
-A recording store for [Swift Flow](https://github.com/Swift-Flow/Swift-Flow). Enables hot-reloading and time travel for Swift Flow apps.
+A recording store for [ReSwift](https://github.com/ReSwift/ReSwift). Enables hot-reloading and time travel for ReSwift apps.
 
-#About Swift Flow Recorder
+#About ReSwiftRecorder
 
-Swift Flow Recorder is an extension for Swift Flow that allows developers to record and replay actions. Swift Flow Recorder supports serializing these actions to disk, which allows to replay recorded sessions and to restart apps at the point you left them off.
+ReSwiftRecorder is an extension for ReSwift that allows developers to record and replay actions. ReSwiftRecorder supports serializing these actions to disk, which allows to replay recorded sessions and to restart apps at the point you left them off.
 
 This is especially useful during development. If you run into a crash, while recording, you now have a recorded JSON file with all the actions needed to reproduce crash. If you restart your app with this recorded session, it will crash in exactly the same way every single time - this allows you to fix the underlying issue without manually navigating through the app over and over again.
 
@@ -22,23 +22,23 @@ The long term goal of this extension is to implement some of the most important 
 
 ##CocoaPods
 
-You can install Swift Flow Recorder via CocoaPods by adding it to your `Podfile`:
+You can install ReSwiftRecorder via CocoaPods by adding it to your `Podfile`:
 
 	use_frameworks!
 
 	source 'https://github.com/CocoaPods/Specs.git'
 	platform :ios, '8.0'
 
-	pod 'SwiftFlow'
-	pod 'SwiftFlowRecorder'
+	pod 'ReSwift'
+	pod 'ReSwiftRecorder'
 	
 And run `pod install`.
 
 ##Carthage
 
-You can install Swift Flow Recorder via [Carthage]() by adding the following line to your Cartfile:
+You can install ReSwiftRecorder via [Carthage]() by adding the following line to your Cartfile:
 
-	github "Swift-Flow/Swift-Flow-Recorder"
+	github "ReSwift/ReSwift-Recorder"
 
 #Configuration
 
@@ -46,10 +46,9 @@ When creating your app's store you need to create an instance of `RecordingStore
 
 ```swift
 RecordingMainStore(reducer: CombinedReducer([CounterReducer(), NavigationReducer()]),
-    appState: AppState(), typeMaps:[counterActionTypeMap, SwiftFlowRouter.typeMap], recording: "recording.json")
+    appState: AppState(), typeMaps:[counterActionTypeMap, ReSwiftRouter.typeMap], recording: "recording.json")
 ```
 The `typeMaps` array is an array that maps type names (Strings) to action types.
 The last argument `recording`, can either be `nil` or the path to a recording stored in the documents directory of the app. If you set the path to a specific recording, the store will load all actions upon launch and replay them, thereby restoring the state of the application.
 
-For a practical example of how to use Swift Flow Recorder, check out the [Counter App Example](https://github.com/Swift-Flow/CounterExample-Navigation-TimeTravel).
-
+For a practical example of how to use ReSwiftRecorder, check out the [Counter App Example](https://github.com/ReSwift/CounterExample-Navigation-TimeTravel).
