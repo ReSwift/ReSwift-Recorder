@@ -11,7 +11,7 @@ import ReSwift
 
 public typealias TypeMap = [String: StandardActionConvertible.Type]
 
-public class RecordingMainStore<State: StateType>: MainStore<State> {
+public class RecordingMainStore<State: StateType>: Store<State> {
 
     typealias RecordedActions = [[String : AnyObject]]
 
@@ -95,7 +95,7 @@ public class RecordingMainStore<State: StateType>: MainStore<State> {
         }
 
         super.dispatch(action) { newState in
-            self.computedStates.append(newState as! State)
+            self.computedStates.append(newState)
             callback?(newState)
         }
 
@@ -174,11 +174,7 @@ public class RecordingMainStore<State: StateType>: MainStore<State> {
         let data = try! NSJSONSerialization.dataWithJSONObject(actions, options: .PrettyPrinted)
 
         if let path = recordingDirectory {
-            do {
-                try data.writeToURL(path, atomically: true)
-            } catch {
-                /* error handling here */
-            }
+            data.writeToURL(path, atomically: true)
         }
     }
 
@@ -208,7 +204,7 @@ public class RecordingMainStore<State: StateType>: MainStore<State> {
             for i in 0..<state {
                 dispatchRecorded(actions[i]) { newState in
                     self.actionsToReplay = self.actionsToReplay! - 1
-                    self.computedStates.append(newState as! State)
+                    self.computedStates.append(newState)
                 }
             }
         } else {

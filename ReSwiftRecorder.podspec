@@ -1,6 +1,6 @@
 Pod::Spec.new do |s|
   s.name             = "ReSwiftRecorder"
-  s.version          = "0.2.3"
+  s.version          = "0.2.4"
   s.summary          = "Time Travel and Hot Reloading for ReSwift"
   s.description      = <<-DESC
                           A recording store for ReSwift. Enables hot-reloading and time travel for ReSwift apps.
@@ -14,5 +14,5 @@ Pod::Spec.new do |s|
   s.ios.deployment_target     = '8.0'
   s.requires_arc = true
   s.source_files     = 'ReSwiftRecorder/**/*.swift'
-  s.dependency 'ReSwift', '~> 0.2.3'
+  s.dependency 'ReSwift', '~> 0.2.4'
 end
