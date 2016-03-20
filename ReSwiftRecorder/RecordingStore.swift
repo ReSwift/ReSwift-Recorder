@@ -84,22 +84,21 @@ public class RecordingMainStore<State: StateType>: Store<State> {
         fatalError("The current Barebones implementation of ReSwiftRecorder does not support this initializer!")
     }
 
-    func dispatchRecorded(action: Action, callback: DispatchCallback?) {
-        super.dispatch(action, callback: callback)
+    func dispatchRecorded(action: Action) {
+        super.dispatch(action)
 
         recordAction(action)
     }
 
-    public override func dispatch(action: Action, callback: DispatchCallback?) -> Any {
+    public override func dispatch(action: Action) -> Any {
         if let actionsToReplay = actionsToReplay where actionsToReplay > 0 {
             // ignore actions that are dispatched during replay
             return action
         }
 
-        super.dispatch(action) { newState in
-            self.computedStates.append(newState)
-            callback?(newState)
-        }
+        super.dispatch(action)
+
+        self.computedStates.append(self.state)
 
         if let standardAction = convertActionToStandardAction(action) {
             recordAction(standardAction)
@@ -204,10 +203,9 @@ public class RecordingMainStore<State: StateType>: Store<State> {
             actionsToReplay = state
 
             for i in 0..<state {
-                dispatchRecorded(actions[i]) { newState in
-                    self.actionsToReplay = self.actionsToReplay! - 1
-                    self.computedStates.append(newState)
-                }
+                dispatchRecorded(actions[i])
+                self.actionsToReplay = self.actionsToReplay! - 1
+                self.computedStates.append(self.state)
             }
         } else {
             self.state = computedStates[state]
