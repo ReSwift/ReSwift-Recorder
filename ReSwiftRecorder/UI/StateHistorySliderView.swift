@@ -26,7 +26,8 @@ class StateHistorySliderView: UIView {
 
         slider = UISlider(frame: bounds)
         slider.minimumValue = 0
-        slider.addTarget(self, action: "sliderValueChanged", forControlEvents: .ValueChanged)
+        slider.addTarget(self, action: #selector(StateHistorySliderView.sliderValueChanged),
+                         forControlEvents: .ValueChanged)
 
         addSubview(slider)
     }

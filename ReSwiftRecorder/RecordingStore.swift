@@ -77,11 +77,13 @@ public class RecordingMainStore<State: StateType>: Store<State> {
     }
 
     public required init(reducer: AnyReducer, appState: StateType, middleware: [Middleware]) {
-        fatalError("The current barebones implementation of ReSwiftRecorder does not support middleware!")
+        fatalError("The current barebones implementation of ReSwiftRecorder does not support " +
+            "middleware!")
     }
 
     public required convenience init(reducer: AnyReducer, appState: StateType) {
-        fatalError("The current Barebones implementation of ReSwiftRecorder does not support this initializer!")
+        fatalError("The current Barebones implementation of ReSwiftRecorder does not support " +
+            "this initializer!")
     }
 
     func dispatchRecorded(action: Action) {
@@ -172,7 +174,9 @@ public class RecordingMainStore<State: StateType>: Store<State> {
     }()
 
     private func storeActions(actions: RecordedActions) {
-        let data = try! NSJSONSerialization.dataWithJSONObject(actions, options: .PrettyPrinted)
+//        let data = try! NSJSONSerialization.dataWithJSONObject(actions, options: .PrettyPrinted)
+        guard let data = try? NSJSONSerialization.dataWithJSONObject(
+            actions, options: .PrettyPrinted) else { return }
 
         if let path = recordingDirectory {
             data.writeToURL(path, atomically: true)
@@ -185,18 +189,18 @@ public class RecordingMainStore<State: StateType>: Store<State> {
         }
         guard let data = NSData(contentsOfURL: recordingPath) else { return [] }
 
-        let jsonArray = try! NSJSONSerialization.JSONObjectWithData(data,
-            options: NSJSONReadingOptions(rawValue: 0)) as! Array<AnyObject>
+        guard let jsonArray = try? NSJSONSerialization.JSONObjectWithData(
+            data, options: NSJSONReadingOptions(rawValue: 0)) as? Array<AnyObject>
+            else { return [] }
 
-        let actionsArray: [Action] = jsonArray.map {
-            return decodeAction($0["action"] as! [String : AnyObject])
-        }
+        let flatArray = jsonArray.flatMap { $0 as? [[String: AnyObject]] } ?? []
 
-        return actionsArray
+        return flatArray.flatMap { $0["action"] as? [String : AnyObject] }
+            .map { decodeAction($0) }
     }
 
     private func replayToState(actions: [Action], state: Int) {
-        if (state > computedStates.count - 1) {
+        if state > computedStates.count - 1 {
             print("Rewind to \(state)...")
             self.state = initialState
             recordedActions = []
@@ -210,7 +214,5 @@ public class RecordingMainStore<State: StateType>: Store<State> {
         } else {
             self.state = computedStates[state]
         }
-        
     }
-    
 }

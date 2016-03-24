@@ -15,8 +15,8 @@
             <BuildableReference
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "625E67141C2007B10027C288"
-               BuildableName = "ReSwiftRecorder.framework"
-               BlueprintName = "ReSwiftRecorder"
+               BuildableName = "ReSwiftRecorder-iOS.framework"
+               BlueprintName = "ReSwiftRecorder-iOS"
                ReferencedContainer = "container:ReSwiftRecorder.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
@@ -46,8 +46,8 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "625E67141C2007B10027C288"
-            BuildableName = "ReSwiftRecorder.framework"
-            BlueprintName = "ReSwiftRecorder"
+            BuildableName = "ReSwiftRecorder-iOS.framework"
+            BlueprintName = "ReSwiftRecorder-iOS"
             ReferencedContainer = "container:ReSwiftRecorder.xcodeproj">
          </BuildableReference>
       </MacroExpansion>
@@ -64,8 +64,8 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "625E67141C2007B10027C288"
-            BuildableName = "ReSwiftRecorder.framework"
-            BlueprintName = "ReSwiftRecorder"
+            BuildableName = "ReSwiftRecorder-iOS.framework"
+            BlueprintName = "ReSwiftRecorder-iOS"
             ReferencedContainer = "container:ReSwiftRecorder.xcodeproj">
          </BuildableReference>
       </MacroExpansion>

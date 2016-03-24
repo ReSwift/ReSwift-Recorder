@@ -49,9 +49,11 @@ extension StateHistoryView: UICollectionViewDataSource, UICollectionViewDelegate
         cellForItemAtIndexPath indexPath: NSIndexPath) -> UICollectionViewCell {
 
         let cell = collectionView.dequeueReusableCellWithReuseIdentifier(
-            collectionViewCellReuseIdentifier, forIndexPath: indexPath) as! StateHistoryCollectionViewCell
+            collectionViewCellReuseIdentifier, forIndexPath: indexPath)
 
-        cell.text = "\(indexPath.row + 1)"
+        if let cell = cell as? StateHistoryCollectionViewCell {
+            cell.text = "\(indexPath.row + 1)"
+        }
 
         return cell
     }
@@ -63,7 +65,8 @@ extension StateHistoryView: UICollectionViewDataSource, UICollectionViewDelegate
         return CGSize(width: frame.size.height, height: frame.size.height)
     }
 
-    func collectionView(collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+    func collectionView(collectionView: UICollectionView,
+                        numberOfItemsInSection section: Int) -> Int {
         return statesCount
     }
 
@@ -72,5 +75,4 @@ extension StateHistoryView: UICollectionViewDataSource, UICollectionViewDelegate
 
         cellSelectionCallback?(indexPath.row + 1)
     }
-
 }

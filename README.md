@@ -5,7 +5,7 @@
 
 A recording store for [ReSwift](https://github.com/ReSwift/ReSwift). Enables hot-reloading and time travel for ReSwift apps.
 
-#About ReSwiftRecorder
+# About ReSwiftRecorder
 
 ReSwiftRecorder is an extension for ReSwift that allows developers to record and replay actions. ReSwiftRecorder supports serializing these actions to disk, which allows to replay recorded sessions and to restart apps at the point you left them off.
 
@@ -15,12 +15,12 @@ The long term goal of this extension is to implement some of the most important 
 
 **This extension is working - you can record and replay actions, but it still in a proof-of-concept state**.
 
-##Next Steps
+## Next Steps
 
 - Make it easier for developers to make actions serializable, ideally cutting down on some of the boilerplate code that is currently necessary.
 - Improve the implementation of this extension, the current implementation is a hack.
 
-##CocoaPods
+## CocoaPods
 
 You can install ReSwiftRecorder via CocoaPods by adding it to your `Podfile`:
 
@@ -34,13 +34,13 @@ You can install ReSwiftRecorder via CocoaPods by adding it to your `Podfile`:
 	
 And run `pod install`.
 
-##Carthage
+## Carthage
 
 You can install ReSwiftRecorder via [Carthage]() by adding the following line to your Cartfile:
 
 	github "ReSwift/ReSwift-Recorder"
 
-#Configuration
+# Configuration
 
 When creating your app's store you need to create an instance of `RecordingStore` instead of an instance of `MainStore`. You also need to provide a `typeMaps` argument that is used to deserialize actions:
 
