@@ -1,28 +1,22 @@
-//
-//  RecordingStore.swift
-//  Meet
-//
-//  Created by Benjamin Encz on 12/1/15.
-//  Copyright © 2015 DigiTales. All rights reserved.
-//
-
 import Foundation
 import ReSwift
+import SocketIOClientSwift
 
 public typealias TypeMap = [String: StandardActionConvertible.Type]
 
 public class RecordingMainStore<State: StateType>: Store<State> {
 
-    typealias RecordedActions = [[String : AnyObject]]
-
-    var recordedActions: RecordedActions = []
     var initialState: State!
-    var computedStates: [State] = []
-    var actionsToReplay: Int?
-    let recordingPath: String?
+    var actionHistory = [Action]()
+    var actionCount = 0
+    var socket: SocketIOClient!
+
     private var typeMap: TypeMap = [:]
 
-    var loadedActions: [Action] = []
+    typealias RecordedActions = [[String : AnyObject]]
+    var recordedActions: RecordedActions = []
+    var computedStates: [State] = []
+    let recordingPath: String?
 
     public init(reducer: AnyReducer, state: State?, typeMaps: [TypeMap], recording: String? = nil) {
 
@@ -41,8 +35,8 @@ public class RecordingMainStore<State: StateType>: Store<State> {
         }
 
         if let recording = recording {
-            loadedActions = loadActions(recording)
-            self.replayToState(loadedActions, state: loadedActions.count)
+            actionHistory = loadActions(recording)
+            self.replayToState(actionHistory, state: actionHistory.count)
         }
     }
 
@@ -63,7 +57,7 @@ public class RecordingMainStore<State: StateType>: Store<State> {
     }
 
     public override func dispatch(action: Action) -> Any {
-        if let actionsToReplay = actionsToReplay where actionsToReplay > 0 {
+        if let actionsToReplay = actionCount where actionsToReplay > 0 {
             // ignore actions that are dispatched during replay
             return action
         }
@@ -74,7 +68,7 @@ public class RecordingMainStore<State: StateType>: Store<State> {
 
         if let standardAction = convertActionToStandardAction(action) {
             recordAction(standardAction)
-            loadedActions.append(standardAction)
+            actionHistory.append(standardAction)
         }
 
         return action
@@ -171,11 +165,11 @@ public class RecordingMainStore<State: StateType>: Store<State> {
             print("Rewind to \(state)...")
             self.state = initialState
             recordedActions = []
-            actionsToReplay = state
+            actionCount = state
 
             for i in 0..<state {
                 dispatchRecorded(actions[i])
-                self.actionsToReplay = self.actionsToReplay! - 1
+                self.actionCount = self.actionCount! - 1
                 self.computedStates.append(self.state)
             }
         } else {
