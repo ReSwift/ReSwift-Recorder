@@ -9,9 +9,6 @@
 /* Begin PBXBuildFile section */
 		254133671C50B37C003C8E93 /* RecordingStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 254133641C50B37C003C8E93 /* RecordingStore.swift */; };
 		254133681C50B37C003C8E93 /* ReSwiftRecorder.h in Headers */ = {isa = PBXBuildFile; fileRef = 254133651C50B37C003C8E93 /* ReSwiftRecorder.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		254133841C50B47D003C8E93 /* StateHistoryCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 254133811C50B47D003C8E93 /* StateHistoryCollectionViewCell.swift */; };
-		254133851C50B47D003C8E93 /* StateHistorySliderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 254133821C50B47D003C8E93 /* StateHistorySliderView.swift */; };
-		254133861C50B47D003C8E93 /* StateHistoryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 254133831C50B47D003C8E93 /* StateHistoryView.swift */; };
 		736DA1C31CA3ED3F00379690 /* ReSwift.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 736DA1C21CA3ED3F00379690 /* ReSwift.framework */; };
 		736DA1C91CA40ADC00379690 /* SocketIOClientSwift.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 736DA1C81CA40ADC00379690 /* SocketIOClientSwift.framework */; };
 /* End PBXBuildFile section */
@@ -20,9 +17,6 @@
 		254133631C50B37C003C8E93 /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = Info.plist; path = ReSwiftRecorder/Info.plist; sourceTree = SOURCE_ROOT; };
 		254133641C50B37C003C8E93 /* RecordingStore.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = RecordingStore.swift; path = ReSwiftRecorder/RecordingStore.swift; sourceTree = SOURCE_ROOT; };
 		254133651C50B37C003C8E93 /* ReSwiftRecorder.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ReSwiftRecorder.h; path = ReSwiftRecorder/ReSwiftRecorder.h; sourceTree = SOURCE_ROOT; };
-		254133811C50B47D003C8E93 /* StateHistoryCollectionViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = StateHistoryCollectionViewCell.swift; path = ReSwiftRecorder/UI/StateHistoryCollectionViewCell.swift; sourceTree = SOURCE_ROOT; };
-		254133821C50B47D003C8E93 /* StateHistorySliderView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = StateHistorySliderView.swift; path = ReSwiftRecorder/UI/StateHistorySliderView.swift; sourceTree = SOURCE_ROOT; };
-		254133831C50B47D003C8E93 /* StateHistoryView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = StateHistoryView.swift; path = ReSwiftRecorder/UI/StateHistoryView.swift; sourceTree = SOURCE_ROOT; };
 		625E67151C2007B10027C288 /* ReSwiftRecorder.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = ReSwiftRecorder.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		736DA1C21CA3ED3F00379690 /* ReSwift.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = ReSwift.framework; sourceTree = "<group>"; };
 		736DA1C61CA4099200379690 /* Cartfile */ = {isa = PBXFileReference; lastKnownFileType = text; path = Cartfile; sourceTree = "<group>"; };
@@ -68,20 +62,9 @@
 				254133631C50B37C003C8E93 /* Info.plist */,
 				254133641C50B37C003C8E93 /* RecordingStore.swift */,
 				254133651C50B37C003C8E93 /* ReSwiftRecorder.h */,
-				625E67211C2008EE0027C288 /* UI */,
 			);
 			name = ReSwiftRecorder;
 			path = SwiftFlowRecorder;
-			sourceTree = "<group>";
-		};
-		625E67211C2008EE0027C288 /* UI */ = {
-			isa = PBXGroup;
-			children = (
-				254133811C50B47D003C8E93 /* StateHistoryCollectionViewCell.swift */,
-				254133821C50B47D003C8E93 /* StateHistorySliderView.swift */,
-				254133831C50B47D003C8E93 /* StateHistoryView.swift */,
-			);
-			path = UI;
 			sourceTree = "<group>";
 		};
 		625E67291C20096E0027C288 /* Carthage */ = {
@@ -222,9 +205,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				254133671C50B37C003C8E93 /* RecordingStore.swift in Sources */,
-				254133851C50B47D003C8E93 /* StateHistorySliderView.swift in Sources */,
-				254133841C50B47D003C8E93 /* StateHistoryCollectionViewCell.swift in Sources */,
-				254133861C50B47D003C8E93 /* StateHistoryView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

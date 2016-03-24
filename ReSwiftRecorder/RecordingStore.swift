@@ -22,37 +22,7 @@ public class RecordingMainStore<State: StateType>: Store<State> {
     let recordingPath: String?
     private var typeMap: TypeMap = [:]
 
-    /// Position of the rewind/replay control from the bottom of the screen
-    /// defaults to 100
-    public var rewindControlYOffset: CGFloat = 100
-
-    var loadedActions: [Action] = [] {
-        didSet {
-            stateHistoryView?.statesCount = loadedActions.count
-        }
-    }
-
-    var stateHistoryView: StateHistorySliderView?
-
-    public var window: UIWindow? {
-        didSet {
-            if let window = window {
-                let windowSize = window.bounds.size
-                stateHistoryView = StateHistorySliderView(frame: CGRect(x: 0,
-                    y: windowSize.height - rewindControlYOffset,
-                    width: windowSize.width, height: 100))
-
-                window.addSubview(stateHistoryView!)
-                window.bringSubviewToFront(stateHistoryView!)
-
-                stateHistoryView?.stateSelectionCallback = { [unowned self] selection in
-                    self.replayToState(self.loadedActions, state: selection)
-                }
-
-                stateHistoryView?.statesCount = loadedActions.count
-            }
-        }
-    }
+    var loadedActions: [Action] = []
 
     public init(reducer: AnyReducer, state: State?, typeMaps: [TypeMap], recording: String? = nil) {
 
@@ -156,8 +126,6 @@ public class RecordingMainStore<State: StateType>: Store<State> {
             .URLForDirectory(.DocumentDirectory, inDomain:
                 .UserDomainMask, appropriateForURL: nil, create: true)
 
-        //        let path = documentDirectoryURL?
-        //            .URLByAppendingPathComponent("recording_\(timestamp).json")
         let path = documentDirectoryURL?
             .URLByAppendingPathComponent("recording.json")
 
@@ -174,7 +142,6 @@ public class RecordingMainStore<State: StateType>: Store<State> {
     }()
 
     private func storeActions(actions: RecordedActions) {
-//        let data = try! NSJSONSerialization.dataWithJSONObject(actions, options: .PrettyPrinted)
         guard let data = try? NSJSONSerialization.dataWithJSONObject(
             actions, options: .PrettyPrinted) else { return }
 
