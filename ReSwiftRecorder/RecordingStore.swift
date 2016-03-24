@@ -11,84 +11,96 @@ public class RecordingMainStore<State: StateType>: Store<State> {
     var actionCount = 0
     var socket: SocketIOClient!
 
+    var isDispatching = false
+    var reducer: AnyReducer!
+
     private var typeMap: TypeMap = [:]
 
-    typealias RecordedActions = [[String : AnyObject]]
-    var recordedActions: RecordedActions = []
-    var computedStates: [State] = []
-    let recordingPath: String?
+    required public init(reducer: AnyReducer, state: State, middleware: [Middleware],
+                  typeMap: TypeMap, socket: SocketIOClient) {
 
-    public init(reducer: AnyReducer, state: State?, typeMaps: [TypeMap], recording: String? = nil) {
-
-        self.recordingPath = recording
+        initialState = state
+        self.typeMap = typeMap
+        self.socket = socket
 
         super.init(reducer: reducer, state: state, middleware: [])
 
-        self.initialState = self.state
-        self.computedStates.append(initialState)
+        self.reducer = reducer
 
-        // merge all typemaps into one
-        typeMaps.forEach { typeMap in
-            for (key, value) in typeMap {
-                self.typeMap[key] = value
+        socket.on("setCurrentAction") { [unowned self] (object, emitter) in
+            guard let stringValue = (object as? [String])?.first else { return }
+            guard let count = Int(stringValue) else { return }
+            self.replayToActionCount(count)
+        }
+
+        socket.on("allActions") { [unowned self] (object, emitter) in
+            print("[TARDIS]: Rewriting history...")
+            guard let rawActions = (object as? [[[String: AnyObject]]])?.first else { return }
+            self.actionHistory = self.convertToActions(rawActions)
+            self.replayToActionCount(self.actionHistory.count)
+            print("[TARDIS]: Replaced history with \(self.actionHistory.count) actions")
+        }
+
+        socket.on("reset") { [unowned self] (object, emitter) in
+            print("[TARDIS]: Erasing history...")
+            self.actionHistory = []
+            self.actionCount = 0
+            self.state = self.initialState
+        }
+
+        socket.on("connect") { (object, emitter) in
+            socket.emit("getAllActions")
+        }
+
+        socket.emit("getAllActions")
+    }
+
+
+    // MARK: - Recording
+
+    override public func _defaultDispatch(action: Action) -> Any {
+        if isDispatching {
+            // Use Obj-C exception since throwing of exceptions can be verified through tests
+            NSException.raise("SwiftFlow:IllegalDispatchFromReducer", format: "Reducers may " +
+                "not dispatch actions.", arguments: getVaList(["nil"]))
+        }
+
+        var oldState = state
+
+        if actionCount != actionHistory.count {
+            oldState = actionHistory.reduce(initialState) { state, action in
+                // swiftlint:disable:next force_cast
+                return self.reducer._handleAction(action, state: state) as! State
             }
         }
 
-        if let recording = recording {
-            actionHistory = loadActions(recording)
-            self.replayToState(actionHistory, state: actionHistory.count)
-        }
-    }
-
-    public required init(reducer: AnyReducer, appState: StateType, middleware: [Middleware]) {
-        fatalError("The current barebones implementation of ReSwiftRecorder does not support " +
-            "middleware!")
-    }
-
-    public required convenience init(reducer: AnyReducer, appState: StateType) {
-        fatalError("The current Barebones implementation of ReSwiftRecorder does not support " +
-            "this initializer!")
-    }
-
-    func dispatchRecorded(action: Action) {
-        super.dispatch(action)
-
         recordAction(action)
-    }
+        actionHistory.append(action)
 
-    public override func dispatch(action: Action) -> Any {
-        if let actionsToReplay = actionCount where actionsToReplay > 0 {
-            // ignore actions that are dispatched during replay
-            return action
-        }
+        isDispatching = true
+        // swiftlint:disable:next force_cast
+        let newState = reducer._handleAction(action, state: oldState) as! State
+        isDispatching = false
 
-        super.dispatch(action)
-
-        self.computedStates.append(self.state)
-
-        if let standardAction = convertActionToStandardAction(action) {
-            recordAction(standardAction)
-            actionHistory.append(standardAction)
-        }
+        state = newState
+        actionCount = actionHistory.count
 
         return action
     }
 
+
     func recordAction(action: Action) {
-        let standardAction = convertActionToStandardAction(action)
-
-        if let standardAction = standardAction {
-            let recordedAction: [String : AnyObject] = [
-                "timestamp": NSDate.timeIntervalSinceReferenceDate(),
-                "action": standardAction.dictionaryRepresentation()
-            ]
-
-            recordedActions.append(recordedAction)
-            storeActions(recordedActions)
-        } else {
-            print("ReSwiftRecorder Warning: Could not log following action because it does not " +
-                "conform to StandardActionConvertible: \(action)")
+        guard let standardAction = convertActionToStandardAction(action) else {
+            return print("ReSwiftRecorder Warning: Could not log following action because it " +
+                "does not conform to StandardActionConvertible: \(action)")
         }
+
+        let recordedAction: [String: AnyObject] = [
+            "timestamp": NSDate.timeIntervalSinceReferenceDate(),
+            "action": standardAction.dictionaryRepresentation()
+        ]
+
+        socket.emit("appendAction", recordedAction)
     }
 
     private func convertActionToStandardAction(action: Action) -> StandardAction? {
@@ -102,6 +114,15 @@ public class RecordingMainStore<State: StateType>: Store<State> {
         return nil
     }
 
+    // MARK: - Reload
+
+    private func convertToActions(rawActions: [[String: AnyObject]]) -> [Action] {
+        return rawActions.flatMap { rawAction in
+            guard let action = rawAction["action"] as? [String : AnyObject] else { return nil }
+            return decodeAction(action)
+        }
+    }
+
     private func decodeAction(jsonDictionary: [String : AnyObject]) -> Action {
         let standardAction = StandardAction(dictionary: jsonDictionary)
 
@@ -113,67 +134,22 @@ public class RecordingMainStore<State: StateType>: Store<State> {
         }
     }
 
-    lazy var recordingDirectory: NSURL? = {
-        let timestamp = Int(NSDate.timeIntervalSinceReferenceDate())
+    // MARK: - Replay
 
-        let documentDirectoryURL = try? NSFileManager.defaultManager()
-            .URLForDirectory(.DocumentDirectory, inDomain:
-                .UserDomainMask, appropriateForURL: nil, create: true)
+    private func replayToActionCount(actionCount: Int) {
 
-        let path = documentDirectoryURL?
-            .URLByAppendingPathComponent("recording.json")
+        let actionCount = min(actionCount, actionHistory.count)
+        self.actionCount = actionCount
 
-        print("Recording to path: \(path)")
-        return path
-    }()
-
-    lazy var documentsDirectory: NSURL? = {
-        let documentDirectoryURL = try? NSFileManager.defaultManager()
-            .URLForDirectory(.DocumentDirectory, inDomain:
-                .UserDomainMask, appropriateForURL: nil, create: true)
-
-        return documentDirectoryURL
-    }()
-
-    private func storeActions(actions: RecordedActions) {
-        guard let data = try? NSJSONSerialization.dataWithJSONObject(
-            actions, options: .PrettyPrinted) else { return }
-
-        if let path = recordingDirectory {
-            data.writeToURL(path, atomically: true)
+        state = actionHistory[0..<actionCount].reduce(initialState) { state, action in
+            // swiftlint:disable:next force_cast
+            return self.reducer._handleAction(action, state: state) as! State
         }
     }
 
-    private func loadActions(recording: String) -> [Action] {
-        guard let recordingPath = documentsDirectory?.URLByAppendingPathComponent(recording) else {
-            return []
-        }
-        guard let data = NSData(contentsOfURL: recordingPath) else { return [] }
-
-        guard let jsonArray = try? NSJSONSerialization.JSONObjectWithData(
-            data, options: NSJSONReadingOptions(rawValue: 0)) as? Array<AnyObject>
-            else { return [] }
-
-        let flatArray = jsonArray.flatMap { $0 as? [[String: AnyObject]] } ?? []
-
-        return flatArray.flatMap { $0["action"] as? [String : AnyObject] }
-            .map { decodeAction($0) }
-    }
-
-    private func replayToState(actions: [Action], state: Int) {
-        if state > computedStates.count - 1 {
-            print("Rewind to \(state)...")
-            self.state = initialState
-            recordedActions = []
-            actionCount = state
-
-            for i in 0..<state {
-                dispatchRecorded(actions[i])
-                self.actionCount = self.actionCount! - 1
-                self.computedStates.append(self.state)
-            }
-        } else {
-            self.state = computedStates[state]
-        }
+    func disconnect() {
+        socket.off("setCurrentAction")
+        socket.off("setAllAction")
+        socket = nil
     }
 }
