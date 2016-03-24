@@ -13,6 +13,7 @@
 		254133851C50B47D003C8E93 /* StateHistorySliderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 254133821C50B47D003C8E93 /* StateHistorySliderView.swift */; };
 		254133861C50B47D003C8E93 /* StateHistoryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 254133831C50B47D003C8E93 /* StateHistoryView.swift */; };
 		736DA1C31CA3ED3F00379690 /* ReSwift.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 736DA1C21CA3ED3F00379690 /* ReSwift.framework */; };
+		736DA1C91CA40ADC00379690 /* SocketIOClientSwift.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 736DA1C81CA40ADC00379690 /* SocketIOClientSwift.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -23,7 +24,10 @@
 		254133821C50B47D003C8E93 /* StateHistorySliderView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = StateHistorySliderView.swift; path = ReSwiftRecorder/UI/StateHistorySliderView.swift; sourceTree = SOURCE_ROOT; };
 		254133831C50B47D003C8E93 /* StateHistoryView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = StateHistoryView.swift; path = ReSwiftRecorder/UI/StateHistoryView.swift; sourceTree = SOURCE_ROOT; };
 		625E67151C2007B10027C288 /* ReSwiftRecorder.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = ReSwiftRecorder.framework; sourceTree = BUILT_PRODUCTS_DIR; };
-		736DA1C21CA3ED3F00379690 /* ReSwift.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = ReSwift.framework; path = Carthage/Build/iOS/ReSwift.framework; sourceTree = SOURCE_ROOT; };
+		736DA1C21CA3ED3F00379690 /* ReSwift.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = ReSwift.framework; sourceTree = "<group>"; };
+		736DA1C61CA4099200379690 /* Cartfile */ = {isa = PBXFileReference; lastKnownFileType = text; path = Cartfile; sourceTree = "<group>"; };
+		736DA1C71CA4099200379690 /* Cartfile.resolved */ = {isa = PBXFileReference; lastKnownFileType = text; path = Cartfile.resolved; sourceTree = "<group>"; };
+		736DA1C81CA40ADC00379690 /* SocketIOClientSwift.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = SocketIOClientSwift.framework; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -32,6 +36,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				736DA1C31CA3ED3F00379690 /* ReSwift.framework in Frameworks */,
+				736DA1C91CA40ADC00379690 /* SocketIOClientSwift.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -41,6 +46,8 @@
 		625E670B1C2007B10027C288 = {
 			isa = PBXGroup;
 			children = (
+				736DA1C61CA4099200379690 /* Cartfile */,
+				736DA1C71CA4099200379690 /* Cartfile.resolved */,
 				625E67291C20096E0027C288 /* Carthage */,
 				625E67171C2007B10027C288 /* ReSwiftRecorder */,
 				625E67161C2007B10027C288 /* Products */,
@@ -82,8 +89,7 @@
 			children = (
 				736DA1C01CA3ED2700379690 /* Build */,
 			);
-			name = Carthage;
-			path = SwiftFlowRecorder;
+			path = Carthage;
 			sourceTree = "<group>";
 		};
 		736DA1C01CA3ED2700379690 /* Build */ = {
@@ -91,15 +97,16 @@
 			children = (
 				736DA1C11CA3ED3300379690 /* iOS */,
 			);
-			name = Build;
+			path = Build;
 			sourceTree = "<group>";
 		};
 		736DA1C11CA3ED3300379690 /* iOS */ = {
 			isa = PBXGroup;
 			children = (
+				736DA1C81CA40ADC00379690 /* SocketIOClientSwift.framework */,
 				736DA1C21CA3ED3F00379690 /* ReSwift.framework */,
 			);
-			name = iOS;
+			path = iOS;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */

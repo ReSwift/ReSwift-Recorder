@@ -1,1 +1,2 @@
 github "ReSwift/ReSwift" ~> 1.0.0
+github "socketio/socket.io-client-swift" ~> 5.5.0
