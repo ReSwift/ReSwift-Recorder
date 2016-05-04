@@ -157,7 +157,7 @@ public class RecordingMainStore<State: StateType>: Store<State> {
         //        let path = documentDirectoryURL?
         //            .URLByAppendingPathComponent("recording_\(timestamp).json")
         let path = documentDirectoryURL?
-            .URLByAppendingPathComponent("recording.json")
+            .URLByAppendingPathComponent(self.recordingPath ?? "recording.json")
 
         print("Recording to path: \(path)")
         return path
