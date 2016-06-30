@@ -114,7 +114,7 @@ public class RecordingMainStore<State: StateType>: Store<State> {
         if let standardAction = standardAction {
             let recordedAction: [String : AnyObject] = [
                 "timestamp": NSDate.timeIntervalSinceReferenceDate(),
-                "action": standardAction.dictionaryRepresentation()
+                "action": standardAction.dictionaryRepresentation
             ]
 
             recordedActions.append(recordedAction)
@@ -139,11 +139,11 @@ public class RecordingMainStore<State: StateType>: Store<State> {
     private func decodeAction(jsonDictionary: [String : AnyObject]) -> Action {
         let standardAction = StandardAction(dictionary: jsonDictionary)
 
-        if !standardAction.isTypedAction {
-            return standardAction
+        if !standardAction!.isTypedAction {
+            return standardAction!
         } else {
-            let typedActionType = self.typeMap[standardAction.type]!
-            return typedActionType.init(standardAction)
+            let typedActionType = self.typeMap[standardAction!.type]!
+            return typedActionType.init(standardAction!)
         }
     }
 
