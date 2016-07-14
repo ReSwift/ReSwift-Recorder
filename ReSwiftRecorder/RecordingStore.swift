@@ -54,11 +54,17 @@ public class RecordingMainStore<State: StateType>: Store<State> {
         }
     }
 
-    public init(reducer: AnyReducer, state: State?, typeMaps: [TypeMap], recording: String? = nil) {
+    public init(
+        reducer: AnyReducer,
+        state: State?,
+        typeMaps: [TypeMap],
+        recording: String? = nil,
+        middleware: [Middleware] = []
+    ) {
 
         self.recordingPath = recording
 
-        super.init(reducer: reducer, state: state, middleware: [])
+        super.init(reducer: reducer, state: state, middleware: middleware)
 
         self.initialState = self.state
         self.computedStates.append(initialState)
@@ -77,11 +83,11 @@ public class RecordingMainStore<State: StateType>: Store<State> {
     }
 
     public required init(reducer: AnyReducer, appState: StateType, middleware: [Middleware]) {
-        fatalError("The current barebones implementation of ReSwiftRecorder does not support middleware!")
+        fatalError("The current barebones implementation of ReSwiftRecorder does not support this initializer!")
     }
 
     public required convenience init(reducer: AnyReducer, appState: StateType) {
-        fatalError("The current Barebones implementation of ReSwiftRecorder does not support this initializer!")
+        fatalError("The current barebones implementation of ReSwiftRecorder does not support this initializer!")
     }
 
     func dispatchRecorded(action: Action) {
