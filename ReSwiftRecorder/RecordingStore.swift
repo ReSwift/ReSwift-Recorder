@@ -77,11 +77,11 @@ public class RecordingMainStore<State: StateType>: Store<State> {
     }
 
     public required init(reducer: AnyReducer, appState: StateType, middleware: [Middleware]) {
-        fatalError("The current barebones implementation of ReSwiftRecorder does not support middleware!")
+        Swift.fatalError("The current barebones implementation of ReSwiftRecorder does not support middleware!")
     }
 
     public required convenience init(reducer: AnyReducer, appState: StateType) {
-        fatalError("The current Barebones implementation of ReSwiftRecorder does not support this initializer!")
+        Swift.fatalError("The current Barebones implementation of ReSwiftRecorder does not support this initializer!")
     }
 
     func dispatchRecorded(action: Action) {
