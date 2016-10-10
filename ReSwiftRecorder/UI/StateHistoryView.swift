@@ -18,15 +18,15 @@ class StateHistoryView: UIView {
 
     var cellSelectionCallback: ((Int) -> Void)?
 
-    private let collectionView: UICollectionView
-    private let collectionViewCellReuseIdentifier = "StateCell"
+    fileprivate let collectionView: UICollectionView
+    fileprivate let collectionViewCellReuseIdentifier = "StateCell"
 
     override init(frame: CGRect) {
         let layout = UICollectionViewFlowLayout()
-        layout.scrollDirection = .Horizontal
+        layout.scrollDirection = .horizontal
         collectionView = UICollectionView(frame: frame, collectionViewLayout: layout)
-        collectionView.backgroundColor = UIColor.greenColor()
-        collectionView.registerClass(StateHistoryCollectionViewCell.self,
+        collectionView.backgroundColor = UIColor.green
+        collectionView.register(StateHistoryCollectionViewCell.self,
             forCellWithReuseIdentifier: collectionViewCellReuseIdentifier)
 
         super.init(frame: frame)
@@ -45,32 +45,32 @@ class StateHistoryView: UIView {
 
 extension StateHistoryView: UICollectionViewDataSource, UICollectionViewDelegate {
 
-    func collectionView(collectionView: UICollectionView,
-        cellForItemAtIndexPath indexPath: NSIndexPath) -> UICollectionViewCell {
+    func collectionView(_ collectionView: UICollectionView,
+        cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
 
-        let cell = collectionView.dequeueReusableCellWithReuseIdentifier(
-            collectionViewCellReuseIdentifier, forIndexPath: indexPath) as! StateHistoryCollectionViewCell
+        let cell = collectionView.dequeueReusableCell(
+            withReuseIdentifier: collectionViewCellReuseIdentifier, for: indexPath) as! StateHistoryCollectionViewCell
 
-        cell.text = "\(indexPath.row + 1)"
+        cell.text = "\((indexPath as NSIndexPath).row + 1)"
 
         return cell
     }
 
-    func collectionView(collectionView: UICollectionView,
+    func collectionView(_ collectionView: UICollectionView,
         layout collectionViewLayout: UICollectionViewLayout,
-        sizeForItemAtIndexPath indexPath: NSIndexPath) -> CGSize {
+        sizeForItemAtIndexPath indexPath: IndexPath) -> CGSize {
 
         return CGSize(width: frame.size.height, height: frame.size.height)
     }
 
-    func collectionView(collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         return statesCount
     }
 
-    func collectionView(collectionView: UICollectionView,
-        didSelectItemAtIndexPath indexPath: NSIndexPath) {
+    func collectionView(_ collectionView: UICollectionView,
+        didSelectItemAt indexPath: IndexPath) {
 
-        cellSelectionCallback?(indexPath.row + 1)
+        cellSelectionCallback?((indexPath as NSIndexPath).row + 1)
     }
 
 }
