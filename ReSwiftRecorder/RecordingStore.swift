@@ -104,6 +104,7 @@ open class RecordingMainStore<State: StateType>: Store<State> {
         recordAction(action)
     }
 
+    @discardableResult
     open override func dispatch(_ action: Action) -> Any {
         if let actionsToReplay = actionsToReplay , actionsToReplay > 0 {
             // ignore actions that are dispatched during replay
