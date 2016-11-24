@@ -96,7 +96,7 @@
 				254133741C50B429003C8E93 /* ReSwift.framework */,
 				254133761C50B429003C8E93 /* ReSwift-iOSTests.xctest */,
 				254133781C50B429003C8E93 /* ReSwift.framework */,
-				2541337A1C50B429003C8E93 /* ReSwift-OSXTests.xctest */,
+				2541337A1C50B429003C8E93 /* ReSwift-macOSTests.xctest */,
 				2541337C1C50B429003C8E93 /* ReSwift.framework */,
 				2541337E1C50B429003C8E93 /* ReSwift-tvOSTests.xctest */,
 				254133801C50B429003C8E93 /* ReSwift.framework */,
@@ -193,6 +193,7 @@
 				TargetAttributes = {
 					625E67141C2007B10027C288 = {
 						CreatedOnToolsVersion = 7.1.1;
+						LastSwiftMigration = 0800;
 					};
 				};
 			};
@@ -241,10 +242,10 @@
 			remoteRef = 254133771C50B429003C8E93 /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
-		2541337A1C50B429003C8E93 /* ReSwift-OSXTests.xctest */ = {
+		2541337A1C50B429003C8E93 /* ReSwift-macOSTests.xctest */ = {
 			isa = PBXReferenceProxy;
 			fileType = wrapper.cfbundle;
-			path = "ReSwift-OSXTests.xctest";
+			path = "ReSwift-macOSTests.xctest";
 			remoteRef = 254133791C50B429003C8E93 /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
@@ -401,6 +402,7 @@
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				SWIFT_VERSION = 3.0;
 			};
 			name = Debug;
 		};
@@ -419,6 +421,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = "de.benjamin-encz.ReSwiftRecorder";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
+				SWIFT_VERSION = 3.0;
 			};
 			name = Release;
 		};

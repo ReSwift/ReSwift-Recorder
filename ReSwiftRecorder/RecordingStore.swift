@@ -11,7 +11,7 @@ import ReSwift
 
 public typealias TypeMap = [String: StandardActionConvertible.Type]
 
-public class RecordingMainStore<State: StateType>: Store<State> {
+open class RecordingMainStore<State: StateType>: Store<State> {
 
     typealias RecordedActions = [[String : AnyObject]]
 
@@ -20,11 +20,11 @@ public class RecordingMainStore<State: StateType>: Store<State> {
     var computedStates: [State] = []
     var actionsToReplay: Int?
     let recordingPath: String?
-    private var typeMap: TypeMap = [:]
+    fileprivate var typeMap: TypeMap = [:]
 
     /// Position of the rewind/replay control from the bottom of the screen
     /// defaults to 100
-    public var rewindControlYOffset: CGFloat = 100
+    open var rewindControlYOffset: CGFloat = 100
 
     var loadedActions: [Action] = [] {
         didSet {
@@ -34,7 +34,7 @@ public class RecordingMainStore<State: StateType>: Store<State> {
 
     var stateHistoryView: StateHistorySliderView?
 
-    public var window: UIWindow? {
+    open var window: UIWindow? {
         didSet {
             if let window = window {
                 let windowSize = window.bounds.size
@@ -43,7 +43,7 @@ public class RecordingMainStore<State: StateType>: Store<State> {
                     width: windowSize.width, height: 100))
 
                 window.addSubview(stateHistoryView!)
-                window.bringSubviewToFront(stateHistoryView!)
+                window.bringSubview(toFront: stateHistoryView!)
 
                 stateHistoryView?.stateSelectionCallback = { [unowned self] selection in
                     self.replayToState(self.loadedActions, state: selection)
@@ -90,14 +90,23 @@ public class RecordingMainStore<State: StateType>: Store<State> {
         fatalError("The current barebones implementation of ReSwiftRecorder does not support this initializer!")
     }
 
-    func dispatchRecorded(action: Action) {
+    required convenience public init(reducer: AnyReducer, state: State?) {
+        fatalError("init(reducer:state:) has not been implemented")
+    }
+
+    required public init(reducer: AnyReducer, state: State?, middleware: [Middleware]) {
+        fatalError("init(reducer:state:middleware:) has not been implemented")
+    }
+
+    func dispatchRecorded(_ action: Action) {
         super.dispatch(action)
 
         recordAction(action)
     }
 
-    public override func dispatch(action: Action) -> Any {
-        if let actionsToReplay = actionsToReplay where actionsToReplay > 0 {
+    @discardableResult
+    open override func dispatch(_ action: Action) -> Any {
+        if let actionsToReplay = actionsToReplay , actionsToReplay > 0 {
             // ignore actions that are dispatched during replay
             return action
         }
@@ -114,13 +123,13 @@ public class RecordingMainStore<State: StateType>: Store<State> {
         return action
     }
 
-    func recordAction(action: Action) {
+    func recordAction(_ action: Action) {
         let standardAction = convertActionToStandardAction(action)
 
         if let standardAction = standardAction {
             let recordedAction: [String : AnyObject] = [
-                "timestamp": NSDate.timeIntervalSinceReferenceDate(),
-                "action": standardAction.dictionaryRepresentation
+                "timestamp": Date.timeIntervalSinceReferenceDate as AnyObject,
+                "action": standardAction.dictionaryRepresentation as AnyObject
             ]
 
             recordedActions.append(recordedAction)
@@ -131,7 +140,7 @@ public class RecordingMainStore<State: StateType>: Store<State> {
         }
     }
 
-    private func convertActionToStandardAction(action: Action) -> StandardAction? {
+    fileprivate func convertActionToStandardAction(_ action: Action) -> StandardAction? {
 
         if let standardAction = action as? StandardAction {
             return standardAction
@@ -142,7 +151,7 @@ public class RecordingMainStore<State: StateType>: Store<State> {
         return nil
     }
 
-    private func decodeAction(jsonDictionary: [String : AnyObject]) -> Action {
+    fileprivate func decodeAction(_ jsonDictionary: [String : AnyObject]) -> Action {
         let standardAction = StandardAction(dictionary: jsonDictionary)
 
         if !standardAction!.isTypedAction {
@@ -153,46 +162,46 @@ public class RecordingMainStore<State: StateType>: Store<State> {
         }
     }
 
-    lazy var recordingDirectory: NSURL? = {
-        let timestamp = Int(NSDate.timeIntervalSinceReferenceDate())
+    lazy var recordingDirectory: URL? = {
+        let timestamp = Int(Date.timeIntervalSinceReferenceDate)
 
-        let documentDirectoryURL = try? NSFileManager.defaultManager()
-            .URLForDirectory(.DocumentDirectory, inDomain:
-                .UserDomainMask, appropriateForURL: nil, create: true)
+        let documentDirectoryURL = try? FileManager.default
+            .url(for: .documentDirectory, in:
+                .userDomainMask, appropriateFor: nil, create: true)
 
         //        let path = documentDirectoryURL?
         //            .URLByAppendingPathComponent("recording_\(timestamp).json")
         let path = documentDirectoryURL?
-            .URLByAppendingPathComponent(self.recordingPath ?? "recording.json")
+            .appendingPathComponent(self.recordingPath ?? "recording.json")
 
         print("Recording to path: \(path)")
         return path
     }()
 
-    lazy var documentsDirectory: NSURL? = {
-        let documentDirectoryURL = try? NSFileManager.defaultManager()
-            .URLForDirectory(.DocumentDirectory, inDomain:
-                .UserDomainMask, appropriateForURL: nil, create: true)
+    lazy var documentsDirectory: URL? = {
+        let documentDirectoryURL = try? FileManager.default
+            .url(for: .documentDirectory, in:
+                .userDomainMask, appropriateFor: nil, create: true)
 
         return documentDirectoryURL
     }()
 
-    private func storeActions(actions: RecordedActions) {
-        let data = try! NSJSONSerialization.dataWithJSONObject(actions, options: .PrettyPrinted)
+    fileprivate func storeActions(_ actions: RecordedActions) {
+        let data = try! JSONSerialization.data(withJSONObject: actions, options: .prettyPrinted)
 
         if let path = recordingDirectory {
-            data.writeToURL(path, atomically: true)
+            try? data.write(to: path, options: [.atomic])
         }
     }
 
-    private func loadActions(recording: String) -> [Action] {
-        guard let recordingPath = documentsDirectory?.URLByAppendingPathComponent(recording) else {
+    fileprivate func loadActions(_ recording: String) -> [Action] {
+        guard let recordingPath = documentsDirectory?.appendingPathComponent(recording) else {
             return []
         }
-        guard let data = NSData(contentsOfURL: recordingPath) else { return [] }
+        guard let data = try? Data(contentsOf: recordingPath) else { return [] }
 
-        let jsonArray = try! NSJSONSerialization.JSONObjectWithData(data,
-            options: NSJSONReadingOptions(rawValue: 0)) as! Array<AnyObject>
+        let jsonArray = try! JSONSerialization.jsonObject(with: data,
+            options: JSONSerialization.ReadingOptions(rawValue: 0)) as! Array<AnyObject>
 
         let actionsArray: [Action] = jsonArray.map {
             return decodeAction($0["action"] as! [String : AnyObject])
@@ -201,7 +210,7 @@ public class RecordingMainStore<State: StateType>: Store<State> {
         return actionsArray
     }
 
-    private func replayToState(actions: [Action], state: Int) {
+    fileprivate func replayToState(_ actions: [Action], state: Int) {
         if (state > computedStates.count - 1) {
             print("Rewind to \(state)...")
             self.state = initialState

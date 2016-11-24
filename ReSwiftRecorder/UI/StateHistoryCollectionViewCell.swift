@@ -23,10 +23,10 @@ class StateHistoryCollectionViewCell: UICollectionViewCell {
         super.init(frame: frame)
 
         label = UILabel()
-        label.font = label.font.fontWithSize(18)
+        label.font = label.font.withSize(18)
         addSubview(label)
 
-        backgroundColor = UIColor.redColor()
+        backgroundColor = UIColor.red
     }
 
     required init?(coder aDecoder: NSCoder) {
