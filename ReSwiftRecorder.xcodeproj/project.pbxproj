@@ -12,7 +12,7 @@
 		254133841C50B47D003C8E93 /* StateHistoryCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 254133811C50B47D003C8E93 /* StateHistoryCollectionViewCell.swift */; };
 		254133851C50B47D003C8E93 /* StateHistorySliderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 254133821C50B47D003C8E93 /* StateHistorySliderView.swift */; };
 		254133861C50B47D003C8E93 /* StateHistoryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 254133831C50B47D003C8E93 /* StateHistoryView.swift */; };
-		254133871C50B4D5003C8E93 /* ReSwift.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 254133741C50B429003C8E93 /* ReSwift.framework */; };
+		3C1CBCBD1E11D257000094E9 /* ReSwift.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3C1CBCBC1E11D257000094E9 /* ReSwift.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -75,6 +75,7 @@
 		254133811C50B47D003C8E93 /* StateHistoryCollectionViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = StateHistoryCollectionViewCell.swift; path = ReSwiftRecorder/UI/StateHistoryCollectionViewCell.swift; sourceTree = SOURCE_ROOT; };
 		254133821C50B47D003C8E93 /* StateHistorySliderView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = StateHistorySliderView.swift; path = ReSwiftRecorder/UI/StateHistorySliderView.swift; sourceTree = SOURCE_ROOT; };
 		254133831C50B47D003C8E93 /* StateHistoryView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = StateHistoryView.swift; path = ReSwiftRecorder/UI/StateHistoryView.swift; sourceTree = SOURCE_ROOT; };
+		3C1CBCBC1E11D257000094E9 /* ReSwift.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = ReSwift.framework; path = Carthage/Build/iOS/ReSwift.framework; sourceTree = "<group>"; };
 		625E67151C2007B10027C288 /* ReSwiftRecorder.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = ReSwiftRecorder.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
@@ -83,7 +84,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				254133871C50B4D5003C8E93 /* ReSwift.framework in Frameworks */,
+				3C1CBCBD1E11D257000094E9 /* ReSwift.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -104,11 +105,20 @@
 			name = Products;
 			sourceTree = "<group>";
 		};
+		3C1CBCBB1E11D257000094E9 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				3C1CBCBC1E11D257000094E9 /* ReSwift.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
 		625E670B1C2007B10027C288 = {
 			isa = PBXGroup;
 			children = (
 				625E67171C2007B10027C288 /* SwiftFlowRecorder */,
 				625E67161C2007B10027C288 /* Products */,
+				3C1CBCBB1E11D257000094E9 /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -194,6 +204,7 @@
 					625E67141C2007B10027C288 = {
 						CreatedOnToolsVersion = 7.1.1;
 						LastSwiftMigration = 0800;
+						ProvisioningStyle = Manual;
 					};
 				};
 			};
@@ -391,9 +402,14 @@
 			buildSettings = {
 				CLANG_ENABLE_MODULES = YES;
 				DEFINES_MODULE = YES;
+				DEVELOPMENT_TEAM = "";
 				DYLIB_COMPATIBILITY_VERSION = 1;
 				DYLIB_CURRENT_VERSION = 1;
 				DYLIB_INSTALL_NAME_BASE = "@rpath";
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/Carthage/Build/iOS",
+				);
 				INFOPLIST_FILE = ReSwiftRecorder/Info.plist;
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
 				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
@@ -411,9 +427,14 @@
 			buildSettings = {
 				CLANG_ENABLE_MODULES = YES;
 				DEFINES_MODULE = YES;
+				DEVELOPMENT_TEAM = "";
 				DYLIB_COMPATIBILITY_VERSION = 1;
 				DYLIB_CURRENT_VERSION = 1;
 				DYLIB_INSTALL_NAME_BASE = "@rpath";
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/Carthage/Build/iOS",
+				);
 				INFOPLIST_FILE = ReSwiftRecorder/Info.plist;
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
 				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
