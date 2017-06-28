@@ -13,6 +13,7 @@
 		254133851C50B47D003C8E93 /* StateHistorySliderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 254133821C50B47D003C8E93 /* StateHistorySliderView.swift */; };
 		254133861C50B47D003C8E93 /* StateHistoryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 254133831C50B47D003C8E93 /* StateHistoryView.swift */; };
 		254133871C50B4D5003C8E93 /* ReSwift.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 254133741C50B429003C8E93 /* ReSwift.framework */; };
+		D43E1C411F04201D00184A11 /* StandardAction.swift in Sources */ = {isa = PBXBuildFile; fileRef = D43E1C401F04201D00184A11 /* StandardAction.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -76,6 +77,7 @@
 		254133821C50B47D003C8E93 /* StateHistorySliderView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = StateHistorySliderView.swift; path = ReSwiftRecorder/UI/StateHistorySliderView.swift; sourceTree = SOURCE_ROOT; };
 		254133831C50B47D003C8E93 /* StateHistoryView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = StateHistoryView.swift; path = ReSwiftRecorder/UI/StateHistoryView.swift; sourceTree = SOURCE_ROOT; };
 		625E67151C2007B10027C288 /* ReSwiftRecorder.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = ReSwiftRecorder.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		D43E1C401F04201D00184A11 /* StandardAction.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = StandardAction.swift; path = ReSwiftRecorder/StandardAction.swift; sourceTree = SOURCE_ROOT; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -125,6 +127,7 @@
 			children = (
 				254133631C50B37C003C8E93 /* Info.plist */,
 				254133641C50B37C003C8E93 /* RecordingStore.swift */,
+				D43E1C401F04201D00184A11 /* StandardAction.swift */,
 				254133651C50B37C003C8E93 /* ReSwiftRecorder.h */,
 				625E67291C20096E0027C288 /* Frameworks */,
 				625E67211C2008EE0027C288 /* UI */,
@@ -291,6 +294,7 @@
 				254133851C50B47D003C8E93 /* StateHistorySliderView.swift in Sources */,
 				254133841C50B47D003C8E93 /* StateHistoryCollectionViewCell.swift in Sources */,
 				254133861C50B47D003C8E93 /* StateHistoryView.swift in Sources */,
+				D43E1C411F04201D00184A11 /* StandardAction.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
