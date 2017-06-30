@@ -55,11 +55,11 @@ open class RecordingMainStore<State: StateType>: Store<State> {
     }
 
     public init(
-        reducer: AnyReducer,
+        reducer: @escaping Reducer<State>,
         state: State?,
         typeMaps: [TypeMap],
         recording: String? = nil,
-        middleware: [Middleware] = []
+        middleware: [Middleware<State>] = []
     ) {
 
         self.recordingPath = recording
@@ -82,19 +82,19 @@ open class RecordingMainStore<State: StateType>: Store<State> {
         }
     }
 
-    public required init(reducer: AnyReducer, appState: StateType, middleware: [Middleware]) {
+    public required init(reducer: Reducer<State>, appState: StateType, middleware: [Middleware<State>]) {
         fatalError("The current barebones implementation of ReSwiftRecorder does not support this initializer!")
     }
 
-    public required convenience init(reducer: AnyReducer, appState: StateType) {
+    public required convenience init(reducer: Reducer<State>, appState: StateType) {
         fatalError("The current barebones implementation of ReSwiftRecorder does not support this initializer!")
     }
 
-    required convenience public init(reducer: AnyReducer, state: State?) {
+    required convenience public init(reducer: Reducer<State>, state: State?) {
         fatalError("init(reducer:state:) has not been implemented")
     }
 
-    required public init(reducer: AnyReducer, state: State?, middleware: [Middleware]) {
+    required public init(reducer: @escaping Reducer<State>, state: State?, middleware: [Middleware<State>]) {
         fatalError("init(reducer:state:middleware:) has not been implemented")
     }
 
@@ -104,11 +104,10 @@ open class RecordingMainStore<State: StateType>: Store<State> {
         recordAction(action)
     }
 
-    @discardableResult
-    open override func dispatch(_ action: Action) -> Any {
+    open override func dispatch(_ action: Action) {
         if let actionsToReplay = actionsToReplay , actionsToReplay > 0 {
             // ignore actions that are dispatched during replay
-            return action
+            return
         }
 
         super.dispatch(action)
@@ -119,8 +118,6 @@ open class RecordingMainStore<State: StateType>: Store<State> {
             recordAction(standardAction)
             loadedActions.append(standardAction)
         }
-
-        return action
     }
 
     func recordAction(_ action: Action) {
@@ -174,7 +171,7 @@ open class RecordingMainStore<State: StateType>: Store<State> {
         let path = documentDirectoryURL?
             .appendingPathComponent(self.recordingPath ?? "recording.json")
 
-        print("Recording to path: \(path)")
+        print("Recording to path: \(String(describing: path))")
         return path
     }()
 
