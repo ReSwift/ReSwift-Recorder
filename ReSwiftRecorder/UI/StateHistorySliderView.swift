@@ -35,6 +35,7 @@ class StateHistorySliderView: UIView {
         fatalError("init(coder:) has not been implemented")
     }
 
+    @objc
     dynamic func sliderValueChanged() {
         stateSelectionCallback?(Int(slider.value))
     }
