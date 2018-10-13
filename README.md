@@ -1,9 +1,15 @@
 [![Carthage compatible](https://img.shields.io/badge/Carthage-compatible-4BC51D.svg?style=flat)](https://github.com/Carthage/Carthage) 
 [![](https://img.shields.io/badge/license-MIT-blue.svg)](https://github.com/Swift-Flow/Swift-Flow/blob/master/LICENSE.md)
 
-⚠️ **Proof of concept. Needs a lot of love!** ⚠️
+A recording store for [ReSwift][]. Enables hot-reloading and time travel for ReSwift apps.
 
-A recording store for [ReSwift](https://github.com/ReSwift/ReSwift). Enables hot-reloading and time travel for ReSwift apps.
+# ⚠️ ReSwift-Recorder is Deprecated
+
+⚠️ Proof of concept. Needs a lot of love! ⚠️
+
+The recorder was written to work with [ReSwift][] v3. It uses an internal state setter which is not supported by more recent releases of ReSwift; so the recorder would need to be rewritten.
+
+[reswift]: https://github.com/ReSwift/ReSwift
 
 # About ReSwiftRecorder
 
