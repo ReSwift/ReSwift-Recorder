@@ -14,5 +14,5 @@ Pod::Spec.new do |s|
   s.ios.deployment_target     = '8.0'
   s.requires_arc = true
   s.source_files     = 'ReSwiftRecorder/**/*.swift'
-  s.dependency 'ReSwift', '~> 4.0'
+  s.dependency 'ReSwift', '~> 3.0.0'
 end
